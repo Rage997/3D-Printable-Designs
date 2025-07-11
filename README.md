@@ -4,7 +4,7 @@ A curated collection of 3D models I've designed for printing on FDM/FFF 3D print
 
 ## 🎯 Projects
 
-[RV Air Vent](./RV%20Air%20Vent/)
+[AC Window Hose](./RV%20Air%20Vent/)
 Parametric adjustable air vent system with threaded airflow control.
 
 ## ⚠️ License
