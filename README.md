@@ -2,6 +2,10 @@
 
 A curated collection of 3D models I've designed for printing on FDM/FFF 3D printers.
 
+🎯 Projects
+[RV Air Vent](./RV%20Air%20Vent/)
+Parametric adjustable air vent system with threaded airflow control - tested on Ender 3 with default settings.
+
 ## ⚠️ License
 
 All designs are released under the [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license.  
