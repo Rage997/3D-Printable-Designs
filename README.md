@@ -2,6 +2,11 @@
 
 A curated collection of 3D models I've designed for printing on FDM/FFF 3D printers.
 
+## 🎯 Projects
+
+[AC Window Hose Adapter](./AC%20Window%20Hose%20Adapter/)
+Parametric adjustable window AC air vent system with threaded airflow control.
+
 ## ⚠️ License
 
 All designs are released under the [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license.  
