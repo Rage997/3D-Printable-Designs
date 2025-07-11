@@ -1,4 +1,4 @@
-/* Air Vent - Adjustable by Niccolo Zuppichini
+/* AC Window Hose Adapter - Adjustable by Niccolo Zuppichini
  *
  * 07-08-2025
  * 
@@ -7,77 +7,83 @@
  * Licensing: CC BY-NC 4.0.
  * You’re free to remix, adapt, and print these files for personal use as long as proper credit is given.
  * Commercial use is not permitted without permission.
-*/
-
-/* [General] */
-
-/*
- * Library included below:
  *
+ * Library included below:
  * 'Nut Job' nut, bolt, washer and threaded rod factory by Mike Thompson 1/12/2013, Thingiverse: mike_linus
  */
-type = "top";//[socket,top]
 
-//Diameter for the plate (Top & Socket)
-plate_diameter		    		= 200;
+// ====================================================================
+// CONFIGURATION PARAMETERS
+// ====================================================================
+
+/* [General] */
+type = "top"; // [socket,top]
+
+// Diameter for the plate (Top & Socket)
+plate_diameter = 200;
 
 // Height for the plate (Top & Socket)
-plate_height				    = 3.8;	
+plate_height = 3.8;
 
 /* [Top] */
+// Length of the threaded section
+thread_length = 50;
 
-//Length of the threaded section
-thread_length  					= 50;	
-
-//Outer diameter of the thread
-thread_outer_diameter           = 8;
+// Outer diameter of the thread
+thread_outer_diameter = 8;
 
 /* [Socket] */
+// Diameter for the pipe
+pipe_diameter = 157;
 
-//Diameter for the pipe
-pipe_diameter				    = 157;
+// Height for the pipe
+pipe_height = 65;
 
-//Height for the pipe
-pipe_height 				    = 65;
+// Width of the pipe border
+pipe_border = 5;
 
-// With of the pipe border
-pipe_border				        = 5;
+// Height of the nut
+nut_height = 20;
 
-//Height of the nut
-nut_height	  				    = 20;	
+// Outer diameter of the bolt thread to match
+nut_thread_outer_diameter = 9;
 
-//Outer diameter of the bolt thread to match
-nut_thread_outer_diameter     	= 9;
-
-//Distance between flats for the hex nut
-nut_diameter    				= 12;	
+// Distance between flats for the hex nut
+nut_diameter = 12;
 
 // Height for the struts
-strut_height                   = 5;
+strut_height = 5;
 
 // Width for the struts
-strut_width                     = 5;
+strut_width = 5;
 
 // Ring diameter of the struts
-strut_ring_diameter             = 20;
+strut_ring_diameter = 20;
 
 /* [Grid Parameters] */
 // Height of the grid
-grid_height = 5; 
+grid_height = 5;
+
+// Height of grid fins
+fin_height = 10;
 
 // Angle for grid fins (0 for perpendicular grids)
-finH = 10; //height of grid fins
-finAngle = 45; //angle of grid fins (0 to 90)
-//finAngle 0 would make a solid plate
-finAmount = 25; //amount of grid fins
-gridDividers = 1; //amount of fin dividers
-gridWallT = 1; //wall thickness of grid fins
+fin_angle = 45; // [0:90]
+
+// Amount of grid fins
+fin_amount = 25;
+
+// Amount of fin dividers
+grid_dividers = 1;
+
+// Wall thickness of grid fins
+grid_wall_thickness = 1;
 
 // Thickness of grid dividers
-divider_thickness = 1.5; 
+divider_thickness = 1.5;
 
 // Spacing between grid dividers
-divider_spacing = 10; 
+divider_spacing = 10;
 
 /* [Mounting Holes] */
 // Number of mounting holes
@@ -93,6 +99,7 @@ mounting_hole_edge_distance = 10; // [5:20]
 // Enable locking ring
 enable_lock = true; // [true,false]
 
+// Number of lock tabs
 lock_count = 6;
 
 // Locking ring thickness
@@ -107,136 +114,132 @@ lock_height = 3; // [10:30]
 // Locking ring position from top
 lock_position = 5; // [0:20]
 
+// Lock angle
 lock_angle = 5;
 
-/* [Hidden] */
+/* [Thread Parameters] */
+// Distance between flats for the hex head or diameter for socket or button head (ignored for Rod)
+head_diameter = 12;
+
+// Thread step or Pitch (2mm works well for most applications ref. ISO262: M3=0.5,M4=0.7,M5=0.8,M6=1,M8=1.25,M10=1.5)
+thread_step = 2;
+
+// Step shape degrees (45 degrees is optimised for most printers ref. ISO262: 30 degrees)
+step_shape_degrees = 45;
+
+// Countersink in both ends
+countersink = 2;
+
+// Thread step or Pitch for nut
+nut_thread_step = 2;
+
+// Step shape degrees for nut
+nut_step_shape_degrees = 45;
+
+// Number of facets for hex head type or nut. Default is 6 for standard hex head and nut
+facets = 100;
+
+// Resolution (lower values for higher resolution, but may slow rendering)
+resolution = 0.5;
+nut_resolution = resolution;
+
+// ====================================================================
+// CALCULATED VALUES
+// ====================================================================
 
 // Calculate strut dimensions
-strut_length = ((pipe_diameter/2)-pipe_border)-(nut_diameter/2)-((strut_ring_diameter-nut_diameter)/2/2);
-strut_pos = (nut_diameter/2)+((strut_ring_diameter-nut_diameter)/2/2);
+strut_length = ((pipe_diameter/2) - pipe_border) - (nut_diameter/2) - ((strut_ring_diameter - nut_diameter)/2/2);
+strut_pos = (nut_diameter/2) + ((strut_ring_diameter - nut_diameter)/2/2);
 
+// ====================================================================
+// GRID MODULES
+// ====================================================================
 
-module gridFin(finL) {
+module grid_fin(fin_length) {
     translate([0, 0, grid_height/2]) {
-        rotate([90-finAngle, 0, 0]) {
+        rotate([90 - fin_angle, 0, 0]) {
             // Modified fin with extra length to prevent gaps
-            cube([pipe_diameter*1.2, gridWallT, finL*1.5], true);
+            cube([pipe_diameter * 1.2, grid_wall_thickness, fin_length * 1.5], true);
         }
     }
 }
 
-module gridFins() {
-    finL = grid_height / cos(90-finAngle);
-    finSpacing = pipe_diameter / finAmount;
+module grid_fins() {
+    fin_length = grid_height / cos(90 - fin_angle);
+    fin_spacing = pipe_diameter / fin_amount;
     
-    translate([0, -pipe_diameter/2, 0])
-        for (i = [0:finAmount-1]) {
-            translate([0, i*finSpacing, 0]) {
-                gridFin(finL);
+    translate([0, -pipe_diameter/2, 0]) {
+        for (i = [0 : fin_amount - 1]) {
+            translate([0, i * fin_spacing, 0]) {
+                grid_fin(fin_length);
             }
         }
-}
-
-module createGrid() {
-    intersection() {
-        // Outer boundary cylinder
-        cylinder(grid_height, d=pipe_diameter - pipe_border*2);
-        
-        // First set of angled fins
-        gridFins();
-        
-        // Second perpendicular set (useful if fin angle is 0)
-//        rotate([0,0,90])
-//            gridFins();
     }
 }
 
-module createScrewStructure() 
-{
-    translate([-(strut_width/2),strut_pos,0])cube([strut_width,strut_length,strut_height],false);
-    translate([-(strut_width/2),-(strut_pos+strut_length),0])cube([strut_width,strut_length,strut_height],false);
-    translate([strut_pos,-(strut_width/2),0])cube([strut_length,strut_width,strut_height],false);
-    translate([-(strut_pos+strut_length),-(strut_width/2),0])cube([strut_length,strut_width,strut_height],false);
+module create_grid() {
+    intersection() {
+        // Outer boundary cylinder
+        cylinder(grid_height, d = pipe_diameter - pipe_border * 2);
+        
+        // First set of angled fins
+        grid_fins();
+        
+        // Second perpendicular set (useful if fin angle is 0)
+        // rotate([0, 0, 90])
+        //     grid_fins();
+    }
+}
 
+// ====================================================================
+// STRUT/SCREW STRUCTURE MODULES
+// ====================================================================
+
+module create_screw_structure() {
+    // Four struts in cross pattern
+    translate([-(strut_width/2), strut_pos, 0])
+        cube([strut_width, strut_length, strut_height], false);
+    
+    translate([-(strut_width/2), -(strut_pos + strut_length), 0])
+        cube([strut_width, strut_length, strut_height], false);
+    
+    translate([strut_pos, -(strut_width/2), 0])
+        cube([strut_length, strut_width, strut_height], false);
+    
+    translate([-(strut_pos + strut_length), -(strut_width/2), 0])
+        cube([strut_length, strut_width, strut_height], false);
+
+    // Ring structure
     difference() {
-         cylinder( $fn = 100, strut_height, strut_ring_diameter/2, strut_ring_diameter/2,false);
-         cylinder( $fn = 100, strut_height, nut_diameter/2, nut_diameter/2,false);
-            
+        cylinder($fn = 100, strut_height, strut_ring_diameter/2, strut_ring_diameter/2, false);
+        cylinder($fn = 100, strut_height, nut_diameter/2, nut_diameter/2, false);
     }   
 }
 
-
 // Combined grid with screw structure subtracted
-module gridWithScrewCutout() {
+module grid_with_screw_cutout() {
     difference() {
-        createGrid();
+        create_grid();
         
         // Subtract the screw structure from the grid
-        // Only the portion that intersects with the grid
         difference() {
-                     cylinder( $fn = 100, strut_height, nut_diameter/2, nut_diameter/2,false);
+            cylinder($fn = 100, strut_height, nut_diameter/2, nut_diameter/2, false);
 
             intersection() {
-                createScrewStructure();
+                create_screw_structure();
                 // Create a cutting volume at grid height
-                translate([0, 0, -0.0])
+                translate([0, 0, -0.1])
                     cylinder(h = strut_height + 0.2, d = pipe_diameter * 2);
             }
-
         }
-        
     }
 }
 
-module main() {
-    if(type=="socket")
-    {
-        // Vented Grill Pattern
-        vent_hole_diameter = 8;  
-        vent_spacing = 12;       
-        vent_rows = floor(pipe_height / vent_spacing);
-        vent_columns = floor(pipe_diameter*3.14 / vent_spacing);
-        
-        // Calculate mounting radius (distance from center to hole centers)
-        mounting_radius = (plate_diameter/2) - mounting_hole_edge_distance;
-        
-        // Main Pipe with Vent Holeslock_count
-        difference() {
-            union() {
-                // Base plate
-                cylinder($fn = 100, plate_height, plate_diameter/2, plate_diameter/2, false);
-                
-                // Pipe with vents
-                difference() {
-                    cylinder($fn = 100, pipe_height, pipe_diameter/2, pipe_diameter/2, false);
-                    
-                    // Cut out inner pipe
-                    translate([0,0,-0.1])
-                        cylinder($fn = 100, pipe_height+0.2, pipe_diameter/2-pipe_border, pipe_diameter/2-pipe_border, false);
-                }
-            }
-            
-            // Inner cutout
-            cylinder($fn = 100, 100, pipe_diameter/2-pipe_border, pipe_diameter/2-pipe_border, false);
-            
-            // Mounting holes to base plate
-            for(i = [0:mounting_holes-1]) {
-                angle = i * (360/mounting_holes);
-                x = mounting_radius * cos(angle);
-                y = mounting_radius * sin(angle);
-                translate([x, y, -0.1])
-                    cylinder(h = plate_height + 0.2, d = mounting_hole_diameter, $fn=24);
-            }
-        }
+// ====================================================================
+// LOCKING MECHANISM MODULES
+// ====================================================================
 
-        // Reinforcing Ring at Top
-        difference() {
-            translate([0,0,pipe_height])
-                cylinder($fn = 100, 3, pipe_diameter/2, pipe_diameter/2, false);
-            translate([0,0,pipe_height])
-                cylinder($fn = 100, 3.2, pipe_diameter/2-pipe_border, pipe_diameter/2-pipe_border, false);
-        }
-            
+module create_locking_tabs() {
     if (enable_lock) {
         for (i = [0 : lock_count - 1]) {
             angle = i * (360 / lock_count);
@@ -247,69 +250,107 @@ module main() {
                         // Angled cube extending inward
                         rotate([0, 0, lock_angle]) {
                             translate([-lock_extension, -lock_thickness/2, 0])
-                                cube([lock_extension, lock_thickness, lock_height], center=false);
+                                cube([lock_extension, lock_thickness, lock_height], center = false);
                         }
                         
                         // Cutting plane to remove outer portion
                         rotate([0, 0, -lock_angle]) {
                             translate([0, -pipe_diameter, -1])
-                                cube([pipe_diameter, pipe_diameter*2, lock_height+2]);
+                                cube([pipe_diameter, pipe_diameter * 2, lock_height + 2]);
                         }
                     }
                 }
             }
         }
     }
+}
+
+// ====================================================================
+// MAIN SOCKET MODULE
+// ====================================================================
+
+module create_socket() {
+    // Calculate mounting radius (distance from center to hole centers)
+    mounting_radius = (plate_diameter/2) - mounting_hole_edge_distance;
+    
+    // Main Pipe Structure
+    difference() {
+        union() {
+            // Base plate
+            cylinder($fn = 100, plate_height, plate_diameter/2, plate_diameter/2, false);
+            
+            // Pipe with vents
+            difference() {
+                cylinder($fn = 100, pipe_height, pipe_diameter/2, pipe_diameter/2, false);
+                
+                // Cut out inner pipe
+                translate([0, 0, -0.1])
+                    cylinder($fn = 100, pipe_height + 0.2, pipe_diameter/2 - pipe_border, pipe_diameter/2 - pipe_border, false);
+            }
+        }
+        
+        // Inner cutout
+        cylinder($fn = 100, 100, pipe_diameter/2 - pipe_border, pipe_diameter/2 - pipe_border, false);
+        
+        // Mounting holes to base plate
+        for(i = [0 : mounting_holes - 1]) {
+            angle = i * (360/mounting_holes);
+            x = mounting_radius * cos(angle);
+            y = mounting_radius * sin(angle);
+            translate([x, y, -0.1])
+                cylinder(h = plate_height + 0.2, d = mounting_hole_diameter, $fn = 24);
+        }
+    }
+
+    // Reinforcing Ring at Top
+    difference() {
+        translate([0, 0, pipe_height])
+            cylinder($fn = 100, 3, pipe_diameter/2, pipe_diameter/2, false);
+        translate([0, 0, pipe_height])
+            cylinder($fn = 100, 3.2, pipe_diameter/2 - pipe_border, pipe_diameter/2 - pipe_border, false);
+    }
+    
+    // Add locking tabs
+    create_locking_tabs();
+}
+
+// ====================================================================
+// MAIN ASSEMBLY MODULE
+// ====================================================================
+
+module main() {
+    if (type == "socket") {
+        create_socket();
     }
 }
 
+// ====================================================================
+// MAIN EXECUTION
+// ====================================================================
+
+// Execute main module
 main();
-createScrewStructure();   
+
+// Add screw structure
+create_screw_structure();
+
 // Add the grid with screw structure subtracted at the base of the pipe
 translate([0, 0, strut_height - grid_height])
-    gridWithScrewCutout();
+    grid_with_screw_cutout();
 
+// ====================================================================
+// THREADING SYSTEM (NUT JOB LIBRARY)
+// ====================================================================
 
-/*
-Add the socket and hex head connector to attach the top part
-*/
-
-//Distance between flats for the hex head or diameter for socket or button head (ignored for Rod)
-head_diameter    				= 12;	
-//Thread step or Pitch (2mm works well for most applications ref. ISO262: M3=0.5,M4=0.7,M5=0.8,M6=1,M8=1.25,M10=1.5)
-thread_step    					= 2;
-//Step shape degrees (45 degrees is optimised for most printers ref. ISO262: 30 degrees)
-step_shape_degrees 				= 45;	
-//Countersink in both ends
-countersink  					= 2;	
-
-
-
-//Thread step or Pitch (2mm works well for most applications ref. ISO262: M3=0.5,M4=0.7,M5=0.8,M6=1,M8=1.25,M10=1.5)
-nut_thread_step    				= 2;
-//Step shape degrees (45 degrees is optimised for most printers ref. ISO262: 30 degrees)
-nut_step_shape_degrees 			= 45;	
-
-
-//Number of facets for hex head type or nut. Default is 6 for standard hex head and nut
-facets                          = 100;
-//Resolution (lower values for higher resolution, but may slow rendering)
-resolution    					= 0.5;	
-nut_resolution    				= resolution;
-
-//Top
-if (type=="top")
-{
-	hex_screw(thread_outer_diameter,thread_step,step_shape_degrees,thread_length,resolution,countersink,head_diameter,0,plate_height,plate_diameter);
+// Top part with threading
+if (type == "top") {
+    hex_screw(thread_outer_diameter, thread_step, step_shape_degrees, thread_length, resolution, countersink, head_diameter, 0, plate_height, plate_diameter);
 }
 
-//Hex Nut (normally slightly larger outer diameter to fit on bolt correctly)
-if (type=="socket")
-{
-	hex_nut(nut_diameter,nut_height,nut_thread_step,nut_step_shape_degrees,nut_thread_outer_diameter,nut_resolution);
+// Hex Nut (normally slightly larger outer diameter to fit on bolt correctly)
+if (type == "socket") {
+    hex_nut(nut_diameter, nut_height, nut_thread_step, nut_step_shape_degrees, nut_thread_outer_diameter, nut_resolution);
 }
-
-
 
 /* Library included below to allow customizer functionality    
  *   

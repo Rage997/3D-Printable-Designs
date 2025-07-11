@@ -1,12 +1,12 @@
-# Air Vent - Adjustable
+# AC Window Hose Adapter - A parametric design
 
 A parametric, adjustable air vent system designed for 3D printing with customizable airflow control and easy installation.
 
 ## Overview
 
-This OpenSCAD project creates a two-part adjustable air vent system consisting of:
-- **Socket**: The main housing with mounting plate, pipe, and internal threading
-- **Top**: The adjustable cover with external threading for airflow control
+This OpenSCAD project creates a two-part fully customisable AC air vent window system consisting of:
+- **Socket**: The main housing with mounting plate, pipe, and internal threading to be mounted on the window
+- **Top**: The adjustable cover with external threading for airflow control to close the "hole"
 
 ## Features
 
