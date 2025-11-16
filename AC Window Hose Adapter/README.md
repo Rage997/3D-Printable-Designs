@@ -88,7 +88,7 @@ You’re free to remix, adapt, and print these files for personal use as long as
 
 Original design by Niccolo Zuppichini  
 Threading system by Mike Thompson (Nut Job library)  
-Thingiverse: https://www.thingiverse.com/thing:3896874
+Inspiration: https://www.thingiverse.com/thing:3896874
 
 
 <div style="display: grid; grid-template-columns: repeat(2, auto); gap: 10px;">
