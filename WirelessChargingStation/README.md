@@ -56,7 +56,10 @@ Open the `Housing.scad` file in OpenSCAD and adjust these parameters:
 
 ### Design Specifications
 
-The wooden plate should match the `inner_circle_diameter` parameter from your 3D printed base (default: 50mm).
+The wooden plate should match the `inner_circle_diameter` parameter from your 3D printed base (default):
+
+Length (X): case_length - 2*wall_thickness = 80 - 4 = 76mm
+Width (Y): case_width - 2*wall_thickness = 60 - 4 = 56mm
 
 ### Creating Your Design
 
@@ -64,6 +67,19 @@ The wooden plate should match the `inner_circle_diameter` parameter from your 3D
 2. Create or prepare your custom image. There's a picture of a cat as example :)
 3. Generate an SVG file with the exact dimensions using the provided python script
 4. Engrave and cut on your laser engraver
+
+### Running the script
+
+# Generate with defaults (76mm × 56mm ellipse)
+```
+python generate_top_plate.py
+
+# With your image
+python generate_top_plate.py --image images/cat.png
+
+# With text
+python generate_top_plate.py --text "My Charger"
+```
 
 ### Material Recommendations
 I reccomend Plywood 3-5mm thick. Lighter woods work best for wireless charging efficiency.
@@ -84,3 +100,9 @@ I reccomend Plywood 3-5mm thick. Lighter woods work best for wireless charging e
   <img src="./images/openscad_preview.png" alt="OpenScad preview" style="width: 250px; height: auto;">
 
 </div>
+
+
+### TODOs
+
+[ ] figure out how to specify with sections to cut and which to engrave
+[ ] try out the design
